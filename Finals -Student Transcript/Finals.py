@@ -83,6 +83,8 @@ class Program:
             Program.detailsFeature(corresponding_records)
         elif choice == 2:
             Program.statisticsFeature(corresponding_records)
+        elif choice == 3:
+            Program.majorTranscriptFeature(corresponding_records)
         
 
 
@@ -113,6 +115,7 @@ class Program:
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000statistics.txt", "w") as file: # Saves the data in the text specified.
             file.write(Program.printStatistics(current_records, data))
+
 
     def printStatistics(statistics_records, current_data):
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
@@ -244,6 +247,8 @@ Do you have any repeated course(s)? {is_repeating}\n
             
             for i in range(max_term):
                 term_rows = []
+                overall_average = []
+                major_average = []
                 term_container = "" # Contains format for which the second(main) information is to be presented.
                 term_container += f"============================================================\n"
                 term_container += f"***************       Term {i+1}     ***************\n"
@@ -256,12 +261,16 @@ Do you have any repeated course(s)? {is_repeating}\n
                 term_container += f"{f'course ID':<15}{f'course name':<15}{f'credit hours':<15}{f'grade':<15}\n"
                 for filtered_row in term_rows:
                     term_container += f"{f'{filtered_row[4]}':<15}{f'{filtered_row[3]}':<15}{f'{filtered_row[6]}':<15}{f'{filtered_row[7]}':<15}\n"
-                # term_container += f"Major Average = {}                   Overall Average = {}"
+                    if filtered_row[5] == "Major": 
+                        major_average.append(int(filtered_row[7]))
+                    overall_average.append(int(filtered_row[7]))
+                term_container += f"Major Average = {statistics.mean(major_average)}                   Overall Average = {statistics.mean(overall_average)}"
                 print(term_container)
             
 
             text_container += str_container # Concatinates the format to the text_container to be presented in the text.
         return text_container # Returns the text_container.
 
+    
 if __name__ == "__main__":
     Program.startFeature()
