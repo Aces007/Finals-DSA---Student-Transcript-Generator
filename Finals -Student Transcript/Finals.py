@@ -62,8 +62,9 @@ class Program:
                 Program.menuFeature(chosen_records) # else. menu is launched.
 
 
-        except ValueError: # If data provided is not in saved records, error will be raised.
+        except ValueError as e: # If data provided is not in saved records, error will be raised.
             print("No corresponding records found.\n\n")
+            print(e)
             Program.startFeature()
 
     def menuFeature(corresponding_records): # This will launch if all the data provided by the user matches the ones in record.
@@ -205,72 +206,102 @@ Do you have any repeated course(s)? {is_repeating}\n
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000MajorTranscript.txt", "w") as file: # Saves the data in the text specified.
-            file.write(Program.printMajorTranscriptFeature(current_records_major, data))
+            file.write(str(Program.printMajorTranscriptFeature(current_records_major, data)))
 
 
     def printMajorTranscriptFeature(statistics_records, current_data): 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
-        for degree in statistics_records:
-            name = degree[2] # Contains student's name, recorded in the 3rd column of the csv file.
-            college = degree[3] # Contains student's college, recorded in the 4th column of the csv file.
-            major = degree[7] # Contains student's major subject, recorded in the 8th column of the csv file.
-            level = degree[5] # Contains student's level, recorded in the 6th column of the csv file.
-            stdID = degree[1] # Contains student's ID, recorded in the 2nd column of the csv file.
-            department = degree[4] # Contains student's department, recorded in the 5th column of the csv file.
-            minor = degree[8] # Contains student's minor subject, recorded in the 9th column of the csv file.
-            term_numbers = degree[9] # Contains student's terms, recorded in the 10th column of the csv file.
-            str_container = "" # Contains format for which the first(Header) information is to be presented.
-            str_container += f"{f'Name: {name}':<35}{f'stdID: {stdID}':<50}\n"
-            str_container += f"{f'College: {college}':<35}{f'Department: {department}':<50}\n"
-            str_container += f"{f'Major: {major}':<35}{f'Minor: {minor}':<50}\n"
-            str_container += f"{f'Level: {level}':<35}{f'Number of terms: {term_numbers}':<50}\n"
-            max_term = 0
-            if "BS" in degree[6]:
-                for row in current_data:
-                    if "BS" in row[1]:
-                        level = "Undergraduate"
-                        if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
-                            max_term = int(row[2])
-            elif "M" in degree[6]:
-                for row in current_data:
-                    if "M" in row[1]:
-                        level = "Graduate(M)"
-                        if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
-                            max_term = int(row[2])
-            elif "D" in degree[6]:
-                for row in current_data:
-                    if "D" in row[1]:
-                        level = "Graduate(D)"
-                        if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
-                            max_term = int(row[2])
-            print(str_container)
+        levels = set([level[5] for level in statistics_records])
+        for level in levels:
             
-            for i in range(max_term):
-                term_rows = []
+            header_value = Program.transcriptHeader(statistics_records, level)
+            text_container += header_value[0]
+            print(header_value[0])
+            for i in range(header_value[1]): #This is iterating to each term
                 overall_average = []
                 major_average = []
-                term_container = "" # Contains format for which the second(main) information is to be presented.
-                term_container += f"============================================================\n"
-                term_container += f"***************       Term {i+1}     ***************\n"
-                term_container += f"============================================================\n"
+                term_str_container = ""
+                term_str_container += f"Term {i+1}\n"
+                term_str_container += f"{f'course ID':<15}{f'course name':<15}{f'credit hours':<15}{f'grade':<15}\n"
                 for row in current_data:
-                    if int(row[2]) == i+1 and degree[6] == row[1]:
-                        term_rows.append(row)
+                    if row[0] == level and int(row[2]) == i+1:  
+                        if "Major" == row[5]:
+                            major_average.append(int(row[7]))
+                        overall_average.append(int(row[7]))
+                        term_str_container += f"{f'{row[4]}':<15}{f'{row[3]}':<15}{f'{row[6]}':<15}{f'{row[7]}':<15}\n"
+                term_str_container += f"Major Average = {statistics.mean(major_average)}            Overall Average = {statistics.mean(overall_average)}"
+                print(term_str_container)
+            #         
+            #         term_container = "" # Contains format for which the second(main) information is to be presented.
+            #         term_container += f"============================================================\n"
+            #         term_container += f"***************       Term {i+1}     ***************\n"
+            #         term_container += f"============================================================\n"
+            #         for row in current_data:
+            #             if int(row[2]) == i+1 and degree[6] == row[1]:
+            #                 term_rows.append(row)
+            # str_container =  ""
+            # for degree in statistics_records:
+            #     max_term = 0
+            #     if "BS" in degree[6]:
+            #         for row in current_data:
+            #             if "BS" in row[1]:
+            #                 level = "Undergraduate"
+            #                 if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
+            #                     max_term = int(row[2])
+            #     elif "M" in degree[6]:
+            #         for row in current_data:
+            #             if "M" in row[1]:
+            #                 level = "Graduate(M)"
+            #                 if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
+            #                     max_term = int(row[2])
+            #     elif "D" in degree[6]:
+            #         for row in current_data:
+            #             if "D" in row[1]:
+            #                 level = "Graduate(D)"
+            #                 if int(row[2]) > max_term: # Will check if the current term being checked is the highest term and will be stored as the max_term.
+            #                     max_term = int(row[2])
+                
+           
 
 
-                term_container += f"{f'course ID':<15}{f'course name':<15}{f'credit hours':<15}{f'grade':<15}\n"
-                for filtered_row in term_rows:
-                    term_container += f"{f'{filtered_row[4]}':<15}{f'{filtered_row[3]}':<15}{f'{filtered_row[6]}':<15}{f'{filtered_row[7]}':<15}\n"
-                    if filtered_row[5] == "Major": 
-                        major_average.append(int(filtered_row[7]))
-                    overall_average.append(int(filtered_row[7]))
-                term_container += f"Major Average = {statistics.mean(major_average)}                   Overall Average = {statistics.mean(overall_average)}"
-                print(term_container)
-            
+            #         term_container 
+            #         for filtered_row in term_rows:
+            #             term_container += f"{f'{filtered_row[4]}':<15}{f'{filtered_row[3]}':<15}{f'{filtered_row[6]}':<15}{f'{filtered_row[7]}':<15}\n"
+            #             
+            #         print(term_container)
+                
 
-            text_container += str_container # Concatinates the format to the text_container to be presented in the text.
-        return text_container # Returns the text_container.
+                # text_container += str_container # Concatinates the format to the text_container to be presented in the text.
+        # return text_container # Returns the text_container.
 
-    
+    def transcriptHeader(statistics_records, current_level):
+        name = statistics_records[0][2]
+        stdID = statistics_records[0][1]
+        term_numbers = 0
+        departments = []
+        minors = []
+        majors = []
+        colleges = []
+        for row in statistics_records:
+            if row[5] == current_level:
+                departments.append(row[4])
+                minors.append(row[8])
+                majors.append(row[7])
+                colleges.append(row[3])
+                term_numbers = max(term_numbers, int(row[9]))
+        colleges_str = ', '.join([college for college in colleges])
+        departments_str = ', '.join([department for department in departments])
+        majors_str = ', '.join([major for major in majors])
+        minors_str = ', '.join([minor for minor in minors])
+
+        
+        str_container = "" # Contains format for which the first(Header) information is to be presented.
+        str_container += f"{f'Name: {name}':<35}{f'stdID: {stdID}':<50}\n"
+        str_container += f"{f'College: {colleges_str}':<35}{f'Department: {departments_str}':<50}\n"
+        str_container += f"{f'Major: {majors_str}':<35}{f'Minor: {minors_str}':<50}\n"
+        str_container += f"{f'Level: {current_level}':<35}{f'Number of terms: {term_numbers}':<50}\n"
+        return [str_container, int(term_numbers)]
+
+
 if __name__ == "__main__":
     Program.startFeature()
