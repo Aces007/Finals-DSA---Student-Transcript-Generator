@@ -1,0 +1,12 @@
+Name: Harold Amad                  stdID: 201008000                                  
+College: College3                  Department: C3Department1                         
+Major: C3D1MajorBS1                Minor: C3D1MinorBS1                               
+Level: U                           Number of terms: 4                                
+Name: Harold Amad                  stdID: 201008000                                  
+College: College1                  Department: C1Department1                         
+Major: C1D1MajorM1                 Minor: C1D1MinorM1                                
+Level: G                           Number of terms: 3                                
+Name: Harold Amad                  stdID: 201008000                                  
+College: College4                  Department: C4Department2                         
+Major: C4D2MajorD1                 Minor: C4D2MinorD1                                
+Level: G                           Number of terms: 2                                
