@@ -214,20 +214,20 @@ Do you have any repeated course(s)? {is_repeating}\n
         levels = set([level[5] for level in statistics_records])
         for level in levels:
             
-            header_value = Program.transcriptHeader(statistics_records, level)
-            text_container += header_value[0]
+            header_value = Program.transcriptHeader(statistics_records, level) # header_value will store the transcript header
+            text_container += header_value[0] # then text_container will concatinate the format our gathered data is to be presented
             print(header_value[0])
-            for i in range(header_value[1]): #This is iterating to each term
+            for i in range(header_value[1]): # This is iterating to each term
                 overall_average = []
                 major_average = []
                 term_str_container = ""
-                term_str_container += f"Term {i+1}\n"
+                term_str_container += f"Term {i+1}\n" # These parts wil present the main data in this format.
                 term_str_container += f"{f'course ID':<15}{f'course name':<15}{f'credit hours':<15}{f'grade':<15}\n"
                 for row in current_data:
                     if row[0] == level and int(row[2]) == i+1:  
-                        if "Major" == row[5]:
+                        if "Major" == row[5]: # If Major is located on the course type in the data it will append only the grades respective of the Major course type.
                             major_average.append(int(row[7]))
-                        overall_average.append(int(row[7]))
+                        overall_average.append(int(row[7])) # Will add all grades for overall average calculation.
                         term_str_container += f"{f'{row[4]}':<15}{f'{row[3]}':<15}{f'{row[6]}':<15}{f'{row[7]}':<15}\n"
                 term_str_container += f"Major Average = {statistics.mean(major_average)}            Overall Average = {statistics.mean(overall_average)}"
                 print(term_str_container)
@@ -274,25 +274,25 @@ Do you have any repeated course(s)? {is_repeating}\n
                 # text_container += str_container # Concatinates the format to the text_container to be presented in the text.
         # return text_container # Returns the text_container.
 
-    def transcriptHeader(statistics_records, current_level):
-        name = statistics_records[0][2]
-        stdID = statistics_records[0][1]
+    def transcriptHeader(statistics_records, current_level): # Contains the header part of the data presented in the transcript.
+        name = statistics_records[0][2] # Contains student's name found on 3rd column of the studentDetails.csv
+        stdID = statistics_records[0][1] # Contains student's ID found on 2nd column of the studentDetails.csv
         term_numbers = 0
-        departments = []
-        minors = []
-        majors = []
-        colleges = []
+        departments = [] # Stores the student's department
+        minors = [] # Stores the student's minor subjects
+        majors = [] # Stores the student's major subjects
+        colleges = [] # Stores the student's college
         for row in statistics_records:
-            if row[5] == current_level:
+            if row[5] == current_level: # If level provided by the user matches with level information in the csv
                 departments.append(row[4])
                 minors.append(row[8])
                 majors.append(row[7])
                 colleges.append(row[3])
                 term_numbers = max(term_numbers, int(row[9]))
-        colleges_str = ', '.join([college for college in colleges])
-        departments_str = ', '.join([department for department in departments])
-        majors_str = ', '.join([major for major in majors])
-        minors_str = ', '.join([minor for minor in minors])
+        colleges_str = ', '.join([college for college in colleges]) # Contains the student's college separated by comma
+        departments_str = ', '.join([department for department in departments]) # Contains the student's department separated by comma
+        majors_str = ', '.join([major for major in majors]) # Contains the student's major subjects separated by comma
+        minors_str = ', '.join([minor for minor in minors]) # Contains the student's minor subjects separated by comma
 
         
         str_container = "" # Contains format for which the first(Header) information is to be presented.
