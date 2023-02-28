@@ -424,13 +424,13 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     
     def getTimeStamp(request_type, timestamps): # Function that will record the timestamps on every function in the system
-        date_now = Program.getDataAndTime()[1]
-        time_now = Program.getDataAndTime()[2]
+        date_now = Program.getDataAndTime()[1] # Gets the date
+        time_now = Program.getDataAndTime()[2] # Gets the time
         timestamp_array = timestamps.append((request_type,date_now,time_now))
         return timestamp_array
 
     
-    def printRequests(timestamps, current_id): # Function that will print all the student requests
+    def printRequests(timestamps, current_id): # Function that will print all the student requests in specified format
         if not os.path.isfile(f"std{current_id}PreviousRequests.txt"):
             lines = f'==================================================\n'
             lines += f"{f'Request':<20}{f'Date':<20}{f'Time':<10}\n"
