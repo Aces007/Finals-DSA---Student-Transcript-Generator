@@ -253,16 +253,16 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     def printMajorTranscriptFeature(statistics_records, current_data): 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
-        levels = list(set([level[5] for level in statistics_records]))
+        levels = list(set([level[5] for level in statistics_records])) # Stores the levels information from the 5th column of the studentDetails.csv
         levels.sort(reverse=True)
         for level in levels:
-            overall_average = []
-            header_value = Program.transcriptHeader(statistics_records, level)
-            text_container += header_value[0]
+            overall_average = [] 
+            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
+            text_container += header_value[0] 
             print(header_value[0])
-            for i in range(header_value[1]): #This is iterating to each term
+            for i in range(header_value[1]): # This is iterating to each term
                 major_average = []
-                term_str_container = ""
+                term_str_container = "" # Format to which the main info in the transcript is to be presented.
                 term_str_container += f"====================================================\n"
                 term_str_container += f"****************       Term {i+1}       ****************\n"
                 term_str_container += f"====================================================\n"
@@ -276,7 +276,7 @@ Do you have any repeated course(s)? {is_repeating}\n
                 term_str_container += f"{f'Major Average = {statistics.mean(major_average)}':<30}{f'Overall Average = {statistics.mean(overall_average)}':<30}\n"
                 text_container += term_str_container
                 print(term_str_container)
-            footer_container = ''
+            footer_container = '' # Presents the footer of the transript.
             footer_container += f"====================================================\n"
             footer_container += f'*******   End of transcript for level ({level})   *******\n'
             footer_container += f"====================================================\n"
@@ -285,7 +285,7 @@ Do you have any repeated course(s)? {is_repeating}\n
 
         return text_container
 
-    def minorTranscriptFeature(current_records_minor):
+    def minorTranscriptFeature(current_records_minor): # Presents the minor transcript of the student (minor courses, the average of minor courses in each term and the overall minor average for all terms up to the last term.)
         current_id = current_records_minor[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
@@ -294,16 +294,16 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     def printMinorTranscriptFeature(statistics_records, current_data):
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
-        levels = list(set([level[5] for level in statistics_records]))
+        levels = list(set([level[5] for level in statistics_records])) # Stores the levels information from the 5th column of the studentDetails.csv
         levels.sort(reverse=True)
         for level in levels:
             overall_average = []
-            header_value = Program.transcriptHeader(statistics_records, level)
+            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
             text_container += header_value[0]
             print(header_value[0])
             for i in range(header_value[1]): #This is iterating to each term
                 minor_average = []
-                term_str_container = ""
+                term_str_container = "" # Format to which the main info in the transcript is to be presented.
                 term_str_container += f"====================================================\n"
                 term_str_container += f"****************       Term {i+1}       ****************\n"
                 term_str_container += f"====================================================\n"
@@ -317,7 +317,7 @@ Do you have any repeated course(s)? {is_repeating}\n
                 term_str_container += f"{f'Minor Average = {statistics.mean(minor_average)}':<30}{f'Overall Average = {statistics.mean(overall_average)}':<30}\n"
                 text_container += term_str_container
                 print(term_str_container)
-            footer_container = ''
+            footer_container = '' # Presents the footer of the transript.
             footer_container += f"====================================================\n"
             footer_container += f'*******   End of transcript for level ({level})   *******\n'
             footer_container += f"====================================================\n"
@@ -326,7 +326,7 @@ Do you have any repeated course(s)? {is_repeating}\n
 
         return text_container
 
-    def fullTranscriptFeature(current_records_full):
+    def fullTranscriptFeature(current_records_full): # Presnts the full transcript information (major and minor courses, the average of major and minor courses in each term, the term average and the overall average.)
         current_id = current_records_full[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
@@ -342,14 +342,14 @@ Do you have any repeated course(s)? {is_repeating}\n
         levels.sort(reverse=True)
         for level in levels:
             overall_average = []
-            header_value = Program.transcriptHeader(statistics_records, level)
+            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
             text_container += header_value[0]
             print(header_value[0])
             for i in range(header_value[1]): #This is iterating to each term
                 minor_average = []
                 major_average = []
-                term_average = []
-                term_str_container = ""
+                term_average = [] 
+                term_str_container = "" # Format to which the main info in the transcript is to be presented.
                 term_str_container += f"====================================================\n"
                 term_str_container += f"****************       Term {i+1}       ****************\n"
                 term_str_container += f"====================================================\n"
@@ -371,7 +371,7 @@ Do you have any repeated course(s)? {is_repeating}\n
                 term_str_container += f"{f'Term Average = {statistics.mean(term_average)}':<30}{f'Overall Average = {statistics.mean(overall_average)}':<30}\n"
                 text_container += term_str_container
                 print(term_str_container)
-            footer_container = ''
+            footer_container = '' # Presents the footer of the transript.
             footer_container += f"====================================================\n"
             footer_container += f'*******   End of transcript for level ({level})   *******\n'
             footer_container += f"====================================================\n"
@@ -407,31 +407,30 @@ Do you have any repeated course(s)? {is_repeating}\n
         str_container += f"{f'Level: {current_level}':<35}{f'Number of terms: {term_numbers}':<50}\n"
         return [str_container, int(term_numbers)]
 
-    def previousRequestFeature(previous_records):
+    def previousRequestFeature(previous_records): # Will present the history of the user's request for transcripts.
         current_id = previous_records[0][1]
         record = Program.printRequests(Program.timestamps, current_id)
         with open(f"std{current_id}PreviousRequests.txt", "w") as file: # Saves the data in the text specified.
             file.write(record)
         print(record)
     
-        #Function that will provide date and time to the system
-
-    def getDataAndTime():
-        today = datetime.today()
-        now = datetime.now()
-        date = (today.strftime("%d/%m/%Y"))
-        time = (now.strftime("%H:%M"))
+        
+    def getDataAndTime(): #Function that will provide date and time to the system
+        today = datetime.today() # Gets current date when session was held
+        now = datetime.now() # Gets current time when session was held
+        date = (today.strftime("%d/%m/%Y")) # Format to which the date is presented
+        time = (now.strftime("%H:%M")) # Format to which the time is presented
         return now,date,time
 
-    # Function that will record the timestamps on every function in the system
-    def getTimeStamp(request_type, timestamps):
+    
+    def getTimeStamp(request_type, timestamps): # Function that will record the timestamps on every function in the system
         date_now = Program.getDataAndTime()[1]
         time_now = Program.getDataAndTime()[2]
         timestamp_array = timestamps.append((request_type,date_now,time_now))
         return timestamp_array
 
-    # Function that will print all the student requests
-    def printRequests(timestamps, current_id):
+    
+    def printRequests(timestamps, current_id): # Function that will print all the student requests
         if not os.path.isfile(f"std{current_id}PreviousRequests.txt"):
             lines = f'==================================================\n'
             lines += f"{f'Request':<20}{f'Date':<20}{f'Time':<10}\n"
@@ -445,7 +444,7 @@ Do you have any repeated course(s)? {is_repeating}\n
             lines += f"\n{f'{request}':<20}{f'{date}':<20}{f'{time}':<10}"
         return lines
     
-    def newStudentFeature():
+    def newStudentFeature(): # Will give user the ability to look for another student.
         Program.clear()
         Program.startFeature()
     
@@ -454,7 +453,8 @@ Do you have any repeated course(s)? {is_repeating}\n
     # def terminateFeature():
     #     sys.exit("Come again another day")
 
-    def requestCounter(num):
+    def requestCounter(num): # Provides counter for the sessions wherein the user requested transcripts.
+        request = 0
         request += num
 
 if __name__ == "__main__":
