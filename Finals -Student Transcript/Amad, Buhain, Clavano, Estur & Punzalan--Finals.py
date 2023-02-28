@@ -106,19 +106,19 @@ class Program:
                 choice = int(input("Enter your feature: "))
                 self.clear()
                 if choice == 1:
-                    self.getTimeStamp('Details', self.timestamps)
+                    self.getTimeStamp('Details', self.timestamps, corresponding_records[0][1])
                     self.detailsFeature(corresponding_records)
                 elif choice == 2:
-                    self.getTimeStamp('Statistics', self.timestamps)
+                    self.getTimeStamp('Statistics', self.timestamps, corresponding_records[0][1])
                     self.statisticsFeature(corresponding_records)
                 elif choice == 3:
-                    self.getTimeStamp('Major', self.timestamps)
+                    self.getTimeStamp('Major', self.timestamps, corresponding_records[0][1])
                     self.majorTranscriptFeature(corresponding_records)
                 elif choice == 4:
-                    self.getTimeStamp('Minor', self.timestamps)
+                    self.getTimeStamp('Minor', self.timestamps, corresponding_records[0][1])
                     self.minorTranscriptFeature(corresponding_records)
                 elif choice == 5:
-                    self.getTimeStamp('Full', self.timestamps)
+                    self.getTimeStamp('Full', self.timestamps, corresponding_records[0][1])
                     self.fullTranscriptFeature(corresponding_records)
                 elif choice == 6:
                     self.previousRequestFeature(corresponding_records)
@@ -212,8 +212,8 @@ class Program:
                         courses.append(row[4])
 
             overall_average = statistics.mean(scores) # Will calculate the overall average of the student's grades.
-            max_score = max(scores) # Contains minimum (lowest) grade
-            min_score = min(scores) # Contains max (highest) grade
+            max_score = max(scores) # Contains minimum(lowest) grade
+            min_score = min(scores) # Contains max(highest) grade
             max_terms = []
             min_terms = []
             for row in current_data:
@@ -336,8 +336,6 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     def printFullTranscriptFeature(self, statistics_records, current_data):
         self.requestCounter(1)
-        self.getTimeStamp('Major', self.timestamps)
-
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records]))
         levels.sort(reverse=True)
@@ -411,8 +409,6 @@ Do you have any repeated course(s)? {is_repeating}\n
     def previousRequestFeature(self, previous_records): # Will present the history of the user's request for transcripts.
         current_id = previous_records[0][1]
         record = self.printRequests(self.timestamps, current_id)
-        with open(f"std{current_id}PreviousRequests.txt", "w") as file: # Saves the data in the text specified.
-            file.write(record)
         print(record)
     
         
@@ -424,13 +420,15 @@ Do you have any repeated course(s)? {is_repeating}\n
         return now,date,time
 
     
-    def getTimeStamp(self, request_type, timestamps): # Function that will record the timestamps on every function in the system
+    def getTimeStamp(self, request_type, timestamps, current_id): # Function that will record the timestamps every time a function is used in the system.
         date_now = self.getDataAndTime()[1] # Gets the date
         time_now = self.getDataAndTime()[2] # Gets the time
         timestamp_array = timestamps.append((request_type,date_now,time_now))
-        return timestamp_array
+        record = self.printRequests(self.timestamps, current_id)
+        with open(f"std{current_id}PreviousRequests.txt", "w") as file: # Saves the data in the text specified.
+            file.write(record)
+        self.timestamps = []
 
-    
     def printRequests(self, timestamps, current_id): # Function that will print all the student requests in specified format
         if not os.path.isfile(f"std{current_id}PreviousRequests.txt"):
             lines = f'==================================================\n'
