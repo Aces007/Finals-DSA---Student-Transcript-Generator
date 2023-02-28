@@ -335,7 +335,7 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     def printFullTranscriptFeature(statistics_records, current_data):
         Program.requestCounter(1)
-        Program.previousRequestFeature('Major', timestamp)
+        Program.getTimeStamp('Major', timestamp)
 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records]))
@@ -379,25 +379,25 @@ Do you have any repeated course(s)? {is_repeating}\n
             print(footer_container)
         Program.sleep()
 
-    def transcriptHeader(statistics_records, current_level): # Returns all necessary information to be printed
-        name = statistics_records[0][2]
-        stdID = statistics_records[0][1]
+    def transcriptHeader(statistics_records, current_level): # Contains the header part of the data presented in the transcript.
+        name = statistics_records[0][2] # Contains student's name found on 3rd column of the studentDetails.csv
+        stdID = statistics_records[0][1] # Contains student's ID found on 2nd column of the studentDetails.csv
         term_numbers = 0
-        departments = []
-        minors = []
-        majors = []
-        colleges = []
+        departments = [] # Stores the student's department
+        minors = [] # Stores the student's minor subjects
+        majors = [] # Stores the student's major subjects
+        colleges = [] # Stores the student's college
         for row in statistics_records:
-            if row[5] == current_level:
+            if row[5] == current_level: # If level provided by the user matches with level information in the csv
                 departments.append(row[4])
                 minors.append(row[8])
                 majors.append(row[7])
                 colleges.append(row[3])
-                term_numbers = max(term_numbers, int(row[9]))
-        colleges_str = ', '.join([college for college in colleges])
-        departments_str = ', '.join([department for department in departments])
-        majors_str = ', '.join([major for major in majors])
-        minors_str = ', '.join([minor for minor in minors])
+                term_numbers = max(term_numbers, int(row[9])) 
+        colleges_str = ', '.join([college for college in colleges]) # Contains the student's college separated by comma
+        departments_str = ', '.join([department for department in departments]) # Contains the student's department separated by comma
+        majors_str = ', '.join([major for major in majors]) # Contains the student's major subjects separated by comma
+        minors_str = ', '.join([minor for minor in minors]) # Contains the student's minor subjects separated by comma
 
         str_container = "" # Contains format for which the first(Header) information is to be presented.
         str_container += f""
@@ -454,8 +454,8 @@ Do you have any repeated course(s)? {is_repeating}\n
     # def terminateFeature():
     #     sys.exit("Come again another day")
 
-    # def requestCounter(num):
-    #     request += num
+    def requestCounter(num):
+        request += num
 
 if __name__ == "__main__":
     Program.startFeature()
