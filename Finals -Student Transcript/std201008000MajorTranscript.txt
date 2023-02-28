@@ -1,1 +1,60 @@
-None
+
+Name: Harold Amad                  stdID: 201008000                                  
+College: College3                  Department: C3Department1                         
+Major: C3D1MajorBS1                Minor: C3D1MinorBS1                               
+Level: U                           Number of terms: 4                                
+====================================================
+****************       Term 1       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA1            CourseA1       3              75             
+Major Average = 75            Overall Average = 78.25       
+====================================================
+****************       Term 2       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA3            CourseA3       3              72             
+Major Average = 72            Overall Average = 78.25       
+====================================================
+****************       Term 3       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA5            CourseA5       3              78             
+Major Average = 78            Overall Average = 78.25       
+====================================================
+****************       Term 4       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA7            CourseA7       3              88             
+Major Average = 88            Overall Average = 78.25       
+====================================================
+*******   End of transcript for level (U)   *******
+====================================================
+
+Name: Harold Amad                  stdID: 201008000                                  
+College: College1, College4        Department: C1Department1, C4Department2          
+Major: C1D1MajorM1, C4D2MajorD1    Minor: C1D1MinorM1, C4D2MinorD1                   
+Level: G                           Number of terms: 3                                
+====================================================
+****************       Term 1       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA9            CourseA9       3              77             
+CA12           CourseA12      3              81             
+Major Average = 79            Overall Average = 81          
+====================================================
+****************       Term 2       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA10           CourseA11      4              79             
+CA14           CourseA14      4              83             
+Major Average = 81            Overall Average = 81          
+====================================================
+****************       Term 3       ****************
+====================================================
+Course ID      Course name    Credit hours   Grade          
+CA14           CourseA14      4              85             
+Major Average = 85            Overall Average = 81          
+====================================================
+*******   End of transcript for level (G)   *******
+====================================================

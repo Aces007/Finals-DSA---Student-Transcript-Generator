@@ -1,6 +1,6 @@
 Name: Harold Amad
 stdID: 201008000
-Level(s): U
-Number Of Terms: 4
-College(s): College3
-Department(s): C3Department1
+Level(s): U, G, G
+Number Of Terms: 4, 3, 2
+College(s): College3, College1, College4
+Department(s): C3Department1, C1Department1, C4Department2
