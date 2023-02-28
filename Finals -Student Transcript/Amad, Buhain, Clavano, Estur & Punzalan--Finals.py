@@ -7,65 +7,66 @@ import statistics
 import math
 
 class Program:
-    timestamps = []
-    BOLD = '\033[1m'
-    END = '\033[0m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    CYAN = '\033[96m'
+    def __init__(self):
+        self.timestamps = []
+        self.BOLD = '\033[1m'
+        self.END = '\033[0m'
+        self.YELLOW = '\033[93m'
+        self.RED = '\033[91m'
+        self.GREEN = '\033[92m'
+        self.CYAN = '\033[96m'
 
-    def readData(): # This is the csv reader, it will read the data inside the csv file and will be used as basis for the program.
+    def readData(self): # This is the csv reader, it will read the data inside the csv file and will be used as basis for the self.
         data = np.loadtxt('studentDetails.csv', dtype=str, delimiter=',', skiprows=1)
         # for each_data in data:
         #     print(each_data)
         return data
     
-    def sleep():
+    def sleep(self):
         for pause_in_seconds in range(3, 0, -1):
-            print (f"{Program.BOLD}{Program.GREEN}Loading in {pause_in_seconds} second ...{Program.END}")
+            print (f"{self.BOLD}{self.GREEN}Loading in {pause_in_seconds} second ...{self.END}")
             time.sleep(1)
 
-    def clear():
+    def clear(seelf):
         clear = lambda: os.system("cls")
         clear()
 
-    def errorMessage():
-        return f'{Program.BOLD}{Program.RED}[Error] Invalid input. Please try again.{Program.END}'
+    def errorMessage(self):
+        return f'{self.BOLD}{self.RED}[Error] Invalid input. Please try again.{self.END}'
 
-    def startFeature():
-        Program.clear()
+    def startFeature(self):
+        self.clear()
         levels_chosen = [] # Storage of the levels chosen  
         # This is where the user will choose the level of the record he/she is looking for
-        initial_student_level = input(f"{Program.BOLD}{Program.YELLOW}Student Level:{Program.END}\n[U] Undergraduate\n[G] Graduate\n[B] Both?\nEnter student level: ") 
+        initial_student_level = input(f"{self.BOLD}{self.YELLOW}Student Level:{self.END}\n[U] Undergraduate\n[G] Graduate\n[B] Both?\nEnter student level: ") 
         if initial_student_level.upper() == "U": # If undergraduate array will store choice then will look for the record using getStudentID
             levels_chosen.append("U")
-            Program.getStudentID(levels_chosen)
+            self.getStudentID(levels_chosen)
         elif initial_student_level.upper() == "G": # If graduate prompt asks what graduate level user is, if M or D or Both
-            Program.clear()
+            self.clear()
             # Then array stores choice then will look for the studentID using the choice.
-            secondary_student_level = input(f"{Program.BOLD}{Program.YELLOW}Graduate Level:{Program.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
+            secondary_student_level = input(f"{self.BOLD}{self.YELLOW}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
             if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "B0":
                 levels_chosen.append("M")
             if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "B0":
                 levels_chosen.append("D")
-            Program.getStudentID(levels_chosen)
+            self.getStudentID(levels_chosen)
 
         elif initial_student_level.upper() == "B": # If both undergraduate and graduate, user's first choice (U) is stored then prompt
-            Program.clear()
+            self.clear()
             # asks whether graduate level is M, D, or Both then 2nd choice is stored then studentID is looked for using the getStudentID.
             levels_chosen.append("U")
-            secondary_student_level = input(f"{Program.BOLD}Graduate Level:{Program.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
+            secondary_student_level = input(f"{self.BOLD}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
             if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "BO":
                 levels_chosen.append("M")
             if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "BO":
                 levels_chosen.append("D")
-            Program.getStudentID(levels_chosen)
+            self.getStudentID(levels_chosen)
 
-    def getStudentID(student_level): # Will look for the student ID based on your choice of student level in the beginning.
+    def getStudentID(self, student_level): # Will look for the student ID based on your choice of student level in the beginning.
         try:
-            Program.clear()
-            transcript_records = Program.readData() # Stores the data on csv
+            self.clear()
+            transcript_records = self.readData() # Stores the data on csv
             student_id = input("Enter student ID: ") # Prompt gets the StudentID of user
             chosen_records = []
             for record in transcript_records: # Then the records in the csv will be the data used to look for user. 
@@ -80,18 +81,18 @@ class Program:
             if not chosen_records: # If data provided is not in saved records, error will be raised.
                 raise ValueError()
             else:
-                Program.menuFeature(chosen_records) # else. menu is launched.
+                self.menuFeature(chosen_records) # else. menu is launched.
 
         except ValueError as e: # If data provided is not in saved records, error will be raised.
             print("No corresponding records found.\n\n")
             print(e)
-            Program.startFeature()
+            self.startFeature()
 
-    def menuFeature(corresponding_records): # This will launch if all the data provided by the user matches the ones in record.
+    def menuFeature(self, corresponding_records): # This will launch if all the data provided by the user matches the ones in record.
         while True:
             try:
                 print("==================================================")
-                print(f"{Program.BOLD}Student Transcription Generation System{Program.END}")
+                print(f"{self.BOLD}Student Transcription Generation System{self.END}")
                 print("==================================================")
                 print("1. Student details") # Provides student details, presented by the detailsFeature function.
                 print("2. Statistics") # Provides student's stats, presented by the statisticsFeature function.
@@ -103,49 +104,49 @@ class Program:
                 print("8. Terminate the System") # Exits the program
                 print("==================================================")
                 choice = int(input("Enter your feature: "))
-                Program.clear()
+                self.clear()
                 if choice == 1:
-                    Program.getTimeStamp('Details', Program.timestamps)
-                    Program.detailsFeature(corresponding_records)
+                    self.getTimeStamp('Details', self.timestamps)
+                    self.detailsFeature(corresponding_records)
                 elif choice == 2:
-                    Program.getTimeStamp('Statistics', Program.timestamps)
-                    Program.statisticsFeature(corresponding_records)
+                    self.getTimeStamp('Statistics', self.timestamps)
+                    self.statisticsFeature(corresponding_records)
                 elif choice == 3:
-                    Program.getTimeStamp('Major', Program.timestamps)
-                    Program.majorTranscriptFeature(corresponding_records)
+                    self.getTimeStamp('Major', self.timestamps)
+                    self.majorTranscriptFeature(corresponding_records)
                 elif choice == 4:
-                    Program.getTimeStamp('Minor', Program.timestamps)
-                    Program.minorTranscriptFeature(corresponding_records)
+                    self.getTimeStamp('Minor', self.timestamps)
+                    self.minorTranscriptFeature(corresponding_records)
                 elif choice == 5:
-                    Program.getTimeStamp('Full', Program.timestamps)
-                    Program.fullTranscriptFeature(corresponding_records)
+                    self.getTimeStamp('Full', self.timestamps)
+                    self.fullTranscriptFeature(corresponding_records)
                 elif choice == 6:
-                    Program.previousRequestFeature(corresponding_records)
+                    self.previousRequestFeature(corresponding_records)
                 elif choice == 7:
-                    Program.newStudentFeature()
+                    self.newStudentFeature()
                 elif choice == 8:
-                    Program.terminateFeature()
+                    self.terminateFeature()
                 else:
                     raise ValueError
             except ValueError:
-                Program.clear()
-                print(Program.errorMessage())
-                Program.menuFeature(corresponding_records)
+                self.clear()
+                print(self.errorMessage())
+                self.menuFeature(corresponding_records)
 
-    def detailsFeature(current_records): # Present student details, prints them in format then stores them in a list.
-        Program.clear()
+    def detailsFeature(self, current_records): # Present student details, prints them in format then stores them in a list.
+        self.clear()
         name = current_records[0][2]
         stdID = current_records[0][1]
         levels = ", ".join(record[5] for record in current_records) 
         term_numbers = ", ".join(record[9] for record in current_records)
         colleges = ", ".join(record[3] for record in current_records)
         departments =", ".join(record[4] for record in current_records)
-        print(Program.printDetails(name, stdID, levels, term_numbers, colleges, departments))
+        print(self.printDetails(name, stdID, levels, term_numbers, colleges, departments))
         with open("std{}details.txt".format(stdID), "w") as file:
-            file.write(Program.printDetails(name, stdID, levels, term_numbers, colleges, departments))
-        Program.sleep()
+            file.write(self.printDetails(name, stdID, levels, term_numbers, colleges, departments))
+        self.sleep()
     
-    def printDetails(name, stdID, levels, term_numbers, colleges, departments): # This will be the printing function used in studentDetails func
+    def printDetails(self, name, stdID, levels, term_numbers, colleges, departments): # This will be the printing function used in studentDetails func
         # This is the format to which the details are presented.
         name_detail = f"Name: {name}"
         std_ID = f"stdID: {stdID}"
@@ -155,14 +156,14 @@ class Program:
         department_detail = f"Department(s): {departments}"
         return f"{name_detail}\n{std_ID}\n{level_detail}\n{term_number_detail}\n{college_detail}\n{department_detail}"
 
-    def statisticsFeature(current_records): # Presents statistics about student's grades, average of those grades, and highest grade per term.
+    def statisticsFeature(self, current_records): # Presents statistics about student's grades, average of those grades, and highest grade per term.
         current_id = current_records[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000statistics.txt", "w") as file: # Saves the data in the text specified.
-            file.write(Program.printStatistics(current_records, data))
+            file.write(self.printStatistics(current_records, data))
 
-    def printStatistics(statistics_records, current_data):
+    def printStatistics(self, statistics_records, current_data):
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         for record in statistics_records:
             str_container = "" # Contains the format to which the data is to be presented.
@@ -244,20 +245,20 @@ Do you have any repeated course(s)? {is_repeating}\n
 
         return text_container # Returns the text_container.
     
-    def majorTranscriptFeature(current_records_major): # Presents the major transcript of the student (major courses, the average of major courses in each term and the overall major average for all terms up to the last term.)
+    def majorTranscriptFeature(self, current_records_major): # Presents the major transcript of the student (major courses, the average of major courses in each term and the overall major average for all terms up to the last term.)
         current_id = current_records_major[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000MajorTranscript.txt", "w") as file: # Saves the data in the text specified.
-            file.write(str(Program.printMajorTranscriptFeature(current_records_major, data)))
+            file.write(str(self.printMajorTranscriptFeature(current_records_major, data)))
 
-    def printMajorTranscriptFeature(statistics_records, current_data): 
+    def printMajorTranscriptFeature(self, statistics_records, current_data): 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records])) # Stores the levels information from the 5th column of the studentDetails.csv
         levels.sort(reverse=True)
         for level in levels:
             overall_average = [] 
-            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
+            header_value = self.transcriptHeader(statistics_records, level) # Presents the header
             text_container += header_value[0] 
             print(header_value[0])
             for i in range(header_value[1]): # This is iterating to each term
@@ -285,20 +286,20 @@ Do you have any repeated course(s)? {is_repeating}\n
 
         return text_container
 
-    def minorTranscriptFeature(current_records_minor): # Presents the minor transcript of the student (minor courses, the average of minor courses in each term and the overall minor average for all terms up to the last term.)
+    def minorTranscriptFeature(self, current_records_minor): # Presents the minor transcript of the student (minor courses, the average of minor courses in each term and the overall minor average for all terms up to the last term.)
         current_id = current_records_minor[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000MinorTranscript.txt", "w") as file: # Saves the data in the text specified.
-            file.write(str(Program.printMinorTranscriptFeature(current_records_minor, data)))
+            file.write(str(self.printMinorTranscriptFeature(current_records_minor, data)))
 
-    def printMinorTranscriptFeature(statistics_records, current_data):
+    def printMinorTranscriptFeature(self, statistics_records, current_data):
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records])) # Stores the levels information from the 5th column of the studentDetails.csv
         levels.sort(reverse=True)
         for level in levels:
             overall_average = []
-            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
+            header_value = self.transcriptHeader(statistics_records, level) # Presents the header
             text_container += header_value[0]
             print(header_value[0])
             for i in range(header_value[1]): #This is iterating to each term
@@ -326,23 +327,23 @@ Do you have any repeated course(s)? {is_repeating}\n
 
         return text_container
 
-    def fullTranscriptFeature(current_records_full): # Presnts the full transcript information (major and minor courses, the average of major and minor courses in each term, the term average and the overall average.)
+    def fullTranscriptFeature(self, current_records_full): # Presnts the full transcript information (major and minor courses, the average of major and minor courses in each term, the term average and the overall average.)
         current_id = current_records_full[0][1]
         # data = np.loadtxt('{}.csv'.format(current_id), dtype=str, delimiter=',', skiprows=1)
         data = np.loadtxt('201008000.csv', dtype=str, delimiter=',', skiprows=1)
         with open("std201008000MajorTranscript.txt", "w") as file: # Saves the data in the text specified.
-            file.write(str(Program.printFullTranscriptFeature(current_records_full, data)))
+            file.write(str(self.printFullTranscriptFeature(current_records_full, data)))
 
-    def printFullTranscriptFeature(statistics_records, current_data):
-        Program.requestCounter(1)
-        Program.getTimeStamp('Major', timestamp)
+    def printFullTranscriptFeature(self, statistics_records, current_data):
+        self.requestCounter(1)
+        self.getTimeStamp('Major', timestamp)
 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records]))
         levels.sort(reverse=True)
         for level in levels:
             overall_average = []
-            header_value = Program.transcriptHeader(statistics_records, level) # Presents the header
+            header_value = self.transcriptHeader(statistics_records, level) # Presents the header
             text_container += header_value[0]
             print(header_value[0])
             for i in range(header_value[1]): #This is iterating to each term
@@ -377,9 +378,9 @@ Do you have any repeated course(s)? {is_repeating}\n
             footer_container += f"====================================================\n"
             text_container += footer_container
             print(footer_container)
-        Program.sleep()
+        self.sleep()
 
-    def transcriptHeader(statistics_records, current_level): # Contains the header part of the data presented in the transcript.
+    def transcriptHeader(self, statistics_records, current_level): # Contains the header part of the data presented in the transcript.
         name = statistics_records[0][2] # Contains student's name found on 3rd column of the studentDetails.csv
         stdID = statistics_records[0][1] # Contains student's ID found on 2nd column of the studentDetails.csv
         term_numbers = 0
@@ -407,15 +408,15 @@ Do you have any repeated course(s)? {is_repeating}\n
         str_container += f"{f'Level: {current_level}':<35}{f'Number of terms: {term_numbers}':<50}\n"
         return [str_container, int(term_numbers)]
 
-    def previousRequestFeature(previous_records): # Will present the history of the user's request for transcripts.
+    def previousRequestFeature(self, previous_records): # Will present the history of the user's request for transcripts.
         current_id = previous_records[0][1]
-        record = Program.printRequests(Program.timestamps, current_id)
+        record = self.printRequests(self.timestamps, current_id)
         with open(f"std{current_id}PreviousRequests.txt", "w") as file: # Saves the data in the text specified.
             file.write(record)
         print(record)
     
         
-    def getDataAndTime(): #Function that will provide date and time to the system
+    def getDataAndTime(self): #Function that will provide date and time to the system
         today = datetime.today() # Gets current date when session was held
         now = datetime.now() # Gets current time when session was held
         date = (today.strftime("%d/%m/%Y")) # Format to which the date is presented
@@ -423,14 +424,14 @@ Do you have any repeated course(s)? {is_repeating}\n
         return now,date,time
 
     
-    def getTimeStamp(request_type, timestamps): # Function that will record the timestamps on every function in the system
-        date_now = Program.getDataAndTime()[1] # Gets the date
-        time_now = Program.getDataAndTime()[2] # Gets the time
+    def getTimeStamp(self, request_type, timestamps): # Function that will record the timestamps on every function in the system
+        date_now = self.getDataAndTime()[1] # Gets the date
+        time_now = self.getDataAndTime()[2] # Gets the time
         timestamp_array = timestamps.append((request_type,date_now,time_now))
         return timestamp_array
 
     
-    def printRequests(timestamps, current_id): # Function that will print all the student requests in specified format
+    def printRequests(self, timestamps, current_id): # Function that will print all the student requests in specified format
         if not os.path.isfile(f"std{current_id}PreviousRequests.txt"):
             lines = f'==================================================\n'
             lines += f"{f'Request':<20}{f'Date':<20}{f'Time':<10}\n"
@@ -444,18 +445,19 @@ Do you have any repeated course(s)? {is_repeating}\n
             lines += f"\n{f'{request}':<20}{f'{date}':<20}{f'{time}':<10}"
         return lines
     
-    def newStudentFeature(): # Will give user the ability to look for another student.
-        Program.clear()
-        Program.startFeature()
+    def newStudentFeature(self): # Will give user the ability to look for another student.
+        self.clear()
+        self.startFeature()
     
-    
-
     # def terminateFeature():
     #     sys.exit("Come again another day")
 
-    def requestCounter(num): # Provides counter for the sessions wherein the user requested transcripts.
+    def requestCounter(self, num): # Provides counter for the sessions wherein the user requested transcripts.
         request = 0
         request += num
 
-if __name__ == "__main__":
-    Program.startFeature()
+def main():
+    if __name__ == "__main__":
+        main_program = Program()
+        main_program.startFeature()
+main()
