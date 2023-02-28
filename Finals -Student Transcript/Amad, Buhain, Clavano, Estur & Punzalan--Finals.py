@@ -273,7 +273,7 @@ Do you have any repeated course(s)? {is_repeating}\n
                         if int(row[2]) == i+1:
                             major_average.append(int(row[7]))
                             term_str_container += f"{f'{row[4]}':<15}{f'{row[3]}':<15}{f'{row[6]}':<15}{f'{row[7]}':<15}\n"
-                        overall_average.append(int(row[7]))
+                        overall_average.append(int(row[7])) 
                 term_str_container += f"{f'Major Average = {statistics.mean(major_average)}':<30}{f'Overall Average = {statistics.mean(overall_average)}':<30}\n"
                 text_container += term_str_container
                 print(term_str_container)
@@ -336,7 +336,7 @@ Do you have any repeated course(s)? {is_repeating}\n
 
     def printFullTranscriptFeature(self, statistics_records, current_data):
         self.requestCounter(1)
-        self.getTimeStamp('Major', timestamp)
+        self.getTimeStamp('Major', self.timestamps)
 
         text_container = "" # Contains the data to be saved in the text based on the format presented by the str_container.
         levels = list(set([level[5] for level in statistics_records]))
