@@ -15,6 +15,7 @@ class Program:
         self.RED = '\033[91m'
         self.GREEN = '\033[92m'
         self.CYAN = '\033[96m'
+        self.counter = 0
 
     def readData(self): # This is the csv reader, it will read the data inside the csv file and will be used as basis for the self.
         data = np.loadtxt('studentDetails.csv', dtype=str, delimiter=',', skiprows=1)
@@ -35,33 +36,40 @@ class Program:
         return f'{self.BOLD}{self.RED}[Error] Invalid input. Please try again.{self.END}'
 
     def startFeature(self):
-        self.clear()
-        levels_chosen = [] # Storage of the levels chosen  
-        # This is where the user will choose the level of the record he/she is looking for
-        initial_student_level = input(f"{self.BOLD}{self.YELLOW}Student Level:{self.END}\n[U] Undergraduate\n[G] Graduate\n[B] Both?\nEnter student level: ") 
-        if initial_student_level.upper() == "U": # If undergraduate array will store choice then will look for the record using getStudentID
-            levels_chosen.append("U")
-            self.getStudentID(levels_chosen)
-        elif initial_student_level.upper() == "G": # If graduate prompt asks what graduate level user is, if M or D or Both
+        try:
             self.clear()
-            # Then array stores choice then will look for the studentID using the choice.
-            secondary_student_level = input(f"{self.BOLD}{self.YELLOW}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
-            if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "B0":
-                levels_chosen.append("M")
-            if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "B0":
-                levels_chosen.append("D")
-            self.getStudentID(levels_chosen)
-
-        elif initial_student_level.upper() == "B": # If both undergraduate and graduate, user's first choice (U) is stored then prompt
-            self.clear()
-            # asks whether graduate level is M, D, or Both then 2nd choice is stored then studentID is looked for using the getStudentID.
-            levels_chosen.append("U")
-            secondary_student_level = input(f"{self.BOLD}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
-            if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "BO":
-                levels_chosen.append("M")
-            if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "BO":
-                levels_chosen.append("D")
-            self.getStudentID(levels_chosen)
+            self.timestamps.clear()
+            self.counter = 0
+            levels_chosen = [] # Storage of the levels chosen  
+            # This is where the user will choose the level of the record he/she is looking for
+            initial_student_level = input(f"{self.BOLD}{self.YELLOW}Student Level:{self.END}\n[U] Undergraduate\n[G] Graduate\n[B] Both?\nEnter student level: ") 
+            if initial_student_level.upper() == "U": # If undergraduate array will store choice then will look for the record using getStudentID
+                levels_chosen.append("U")
+                self.getStudentID(levels_chosen)
+            elif initial_student_level.upper() == "G": # If graduate prompt asks what graduate level user is, if M or D or Both
+                self.clear()
+                # Then array stores choice then will look for the studentID using the choice.
+                secondary_student_level = input(f"{self.BOLD}{self.YELLOW}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
+                if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "B0":
+                    levels_chosen.append("M")
+                if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "B0":
+                    levels_chosen.append("D")
+                self.getStudentID(levels_chosen)
+            elif initial_student_level.upper() == "B": # If both undergraduate and graduate, user's first choice (U) is stored then prompt
+                self.clear()
+                # asks whether graduate level is M, D, or Both then 2nd choice is stored then studentID is looked for using the getStudentID.
+                levels_chosen.append("U")
+                secondary_student_level = input(f"{self.BOLD}Graduate Level:{self.END}\n[M] Master\n[D] Doctorate\n[B0] Both?\nEnter graduate level: ")
+                if secondary_student_level.upper() == "M" or secondary_student_level.upper() == "BO":
+                    levels_chosen.append("M")
+                if secondary_student_level.upper() == "D" or secondary_student_level.upper() == "BO":
+                    levels_chosen.append("D")
+                self.getStudentID(levels_chosen)
+            else: raise ValueError
+        except ValueError:
+            # self.clear()
+            self.errorMessage()
+            self.startFeature()
 
     def getStudentID(self, student_level): # Will look for the student ID based on your choice of student level in the beginning.
         try:
@@ -106,18 +114,23 @@ class Program:
                 choice = int(input("Enter your feature: "))
                 self.clear()
                 if choice == 1:
+                    self.requestCounter(1)
                     self.getTimeStamp('Details', self.timestamps, corresponding_records[0][1])
                     self.detailsFeature(corresponding_records)
                 elif choice == 2:
+                    self.requestCounter(1)
                     self.getTimeStamp('Statistics', self.timestamps, corresponding_records[0][1])
                     self.statisticsFeature(corresponding_records)
                 elif choice == 3:
+                    self.requestCounter(1)
                     self.getTimeStamp('Major', self.timestamps, corresponding_records[0][1])
                     self.majorTranscriptFeature(corresponding_records)
                 elif choice == 4:
+                    self.requestCounter(1)
                     self.getTimeStamp('Minor', self.timestamps, corresponding_records[0][1])
                     self.minorTranscriptFeature(corresponding_records)
                 elif choice == 5:
+                    self.requestCounter(1)
                     self.getTimeStamp('Full', self.timestamps, corresponding_records[0][1])
                     self.fullTranscriptFeature(corresponding_records)
                 elif choice == 6:
@@ -420,7 +433,7 @@ Do you have any repeated course(s)? {is_repeating}\n
         return now,date,time
 
     
-    def getTimeStamp(self, request_type, timestamps, current_id): # Function that will record the timestamps every time a function is used in the system.
+    def getTimeStamp(self, request_type, timestamps, current_id): # Function that will record the timestamps on every function in the system
         date_now = self.getDataAndTime()[1] # Gets the date
         time_now = self.getDataAndTime()[2] # Gets the time
         timestamp_array = timestamps.append((request_type,date_now,time_now))
@@ -447,12 +460,13 @@ Do you have any repeated course(s)? {is_repeating}\n
         self.clear()
         self.startFeature()
     
-    # def terminateFeature():
-    #     sys.exit("Come again another day")
+    def terminateFeature(self):
+        print(self.requestCounter(0))
+        sys.exit("Come again another day")
 
     def requestCounter(self, num): # Provides counter for the sessions wherein the user requested transcripts.
-        request = 0
-        request += num
+        self.counter += num
+        return f'==================================================\nNumber of requests: {self.counter}\n=================================================='
 
 def main():
     if __name__ == "__main__":
