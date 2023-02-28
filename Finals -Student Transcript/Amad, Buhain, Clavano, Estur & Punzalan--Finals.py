@@ -212,8 +212,8 @@ class Program:
                         courses.append(row[4])
 
             overall_average = statistics.mean(scores) # Will calculate the overall average of the student's grades.
-            max_score = max(scores) # Contains minimum(lowest) grade
-            min_score = min(scores) # Contains max(highest) grade
+            max_score = max(scores) # Contains minimum (lowest) grade
+            min_score = min(scores) # Contains max (highest) grade
             max_terms = []
             min_terms = []
             for row in current_data:
