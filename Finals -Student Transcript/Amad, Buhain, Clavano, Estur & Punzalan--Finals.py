@@ -12,7 +12,6 @@ from datetime import datetime
 import sys
 import os
 import statistics
-import math
 
 class Program:
     def __init__(self): # init
@@ -126,7 +125,7 @@ class Program:
                 print("8. Terminate the System") # Exits the program
                 print("==================================================")
                 choice = int(input(f"{self.CYAN}Enter your feature:{self.END} "))
-                self.clear()
+                # self.clear()/
                 if choice == 1:
                     self.clear()
                     self.requestCounter(1)
@@ -443,7 +442,7 @@ Do you have any repeated course(s)? {is_repeating}\n
         record = self.printRequests(self.timestamps, current_id)
         print(record)
     
-    def getDataAndTime(self): #Function that will provide date and time to the system
+    def getDateAndTime(self): #Function that will provide date and time to the system
         today = datetime.today() # Gets current date when session was held
         now = datetime.now() # Gets current time when session was held
         date = (today.strftime("%d/%m/%Y")) # Format to which the date is presented
@@ -451,8 +450,8 @@ Do you have any repeated course(s)? {is_repeating}\n
         return now,date,time
 
     def getTimeStamp(self, request_type, timestamps, current_id): # Function that will record the timestamps on every function in the system
-        date_now = self.getDataAndTime()[1] # Gets the date
-        time_now = self.getDataAndTime()[2] # Gets the time
+        date_now = self.getDateAndTime()[1] # Gets the date
+        time_now = self.getDateAndTime()[2] # Gets the time
         timestamp_array = timestamps.append((request_type,date_now,time_now))
         record = self.printRequests(self.timestamps, current_id)
         with open(f"std{current_id}PreviousRequests.txt", "w") as file: # Saves the data in the text specified.
@@ -478,7 +477,7 @@ Do you have any repeated course(s)? {is_repeating}\n
         self.sleep()
         self.startFeature()
     
-    def terminateFeature(self): # Will exit the program, and provide the number of sessions where the user requested for information or transcripts.
+    def terminateFeature(self):
         print(self.requestCounter(0))
         sys.exit(f"{self.BOLD}{self.GREEN}Thank you for using the transcript generator system.{self.END}")
 
